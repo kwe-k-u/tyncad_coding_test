@@ -1,6 +1,6 @@
 
 
-class Filter{
+class Feed{
   int id;
   String title;
   String description;
@@ -10,7 +10,7 @@ class Filter{
   int commentCount;
   DateTime dateCreated;
 
-  Filter({
+  Feed({
     required this.id,
     required this.title,
     required this.description,
@@ -23,8 +23,8 @@ class Filter{
 });
 
 
-  factory Filter.fromJson(Map<String,dynamic> map)=>
-      Filter(
+  factory Feed.fromJson(Map<String,dynamic> map)=>
+      Feed(
           id: map["id"],
           title: map["title"],
           description: map["description"],

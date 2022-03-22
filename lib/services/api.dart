@@ -1,19 +1,21 @@
 // import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
+import 'package:tyncad_test/models/user.dart';
 
 
 class Api extends BaseApi{
 
 
-  Future<Response> createAccount({
+  Future<User?> createAccount({
     required String firstName,
     required String lastName,
     required String password,
     required String email,
     required String phoneNumber
   }) async{
-    return POST(
+    User? user;
+    Response response = await  POST(
         endpoint: "users/register/",
         body: {
           "first_name": firstName,
@@ -22,21 +24,31 @@ class Api extends BaseApi{
           "phone_number": phoneNumber,
           "password": password
         }
-
     );
+
+    return user;
   }
 
-  Future<Response> login({required String email, required password}) async{
-    return POST(endpoint: "users/login/",
+  Future<User?> login({required String email, required password}) async{
+    User? user;
+    print("start");
+    Response response = await POST(endpoint: "users/login/",
       body: {
         "email": email,
         "password": password
       }
     );
+
+    print("end");
+    print(response);
+    print(response.statusCode);
+
+    return user;
   }
 
   Future<Response> getProfile(String token) async{
     return GET(endpoint: "users/me/", auth: token);
+
   }
 
   Future<Response> filterFeed({required String token, required String filter}) async {
@@ -54,7 +66,7 @@ class Api extends BaseApi{
 
 
 class BaseApi{
-  final String _baseUrl = dotenv.env['base_url']!;
+  final String _baseUrl = dotenv.env['BASE_URL']!;
 
   Future<Response> GET({required String endpoint, Map<String,String>? map, String? auth}) async {
     String url = map == null ? endpoint : endpoint + _genArgs(map);
