@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+import 'package:tyncad_test/models/app_state.dart';
 import 'package:tyncad_test/screens/sign_in/sign_in.dart';
 
 void main() async{
    await dotenv.load(fileName: ".env.test");
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_)=> AppState(),
+    builder: (context, widget) =>const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +26,7 @@ class MyApp extends StatelessWidget {
           color:  Colors.red
         )
       ),
-      home: const SignIn(),
+      home:  const SignIn(),
     );
   }
 }

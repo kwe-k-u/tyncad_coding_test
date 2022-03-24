@@ -1,6 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:tyncad_test/models/app_state.dart';
 
 
 class ProfileScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(
                 width: double.maxFinite,
                   height: size.height * 0.25,
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 50,
                     child: Icon(Icons.account_circle),
                   )
@@ -34,10 +35,10 @@ class ProfileScreen extends StatelessWidget {
                   _InfoLabel(
                     width: size.width * 0.73,
                       label: "Full Name",
-                      value: "kwasi Amankwah"
+                      value: context.read<AppState>().user.fullName
                   ),
 
-                  Text("Active"),
+                  const _AccountStatusText(),
                 ],
               ),
               Row(
@@ -46,12 +47,12 @@ class ProfileScreen extends StatelessWidget {
                   _InfoLabel(
                     width: size.width *0.42,
                       label: "First Name",
-                      value: "kwasi"
+                      value: context.read<AppState>().user.fullName
                   ),
                   _InfoLabel(
                     width: size.width * 0.42,
                       label: "Last Name",
-                      value: "Amankwah"
+                      value: context.read<AppState>().user.lastName
                   ),
                 ],
               ),
@@ -59,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
 
               _InfoLabel(
                   label: "Email",
-                  value: "email@gmail.com"
+                  value: context.read<AppState>().user.email
               ),
 
 
@@ -69,13 +70,13 @@ class ProfileScreen extends StatelessWidget {
                   _InfoLabel(
                     width: size.width * 0.42,
                       label: "phone number",
-                      value: "055958555"
+                      value: context.read<AppState>().user.phoneNumber
                   ),
 
                   _InfoLabel(
                       width: size.width * 0.42,
                       label: "Date Created",
-                      value: "2022-03-216Z"
+                      value: DateFormat.yMMMd().format(context.read<AppState>().user.dateCreated)
                   ),
                 ],
               ),
@@ -117,11 +118,11 @@ class _InfoLabel extends StatelessWidget {
 
     return Container(
       width: width ?? size.width * 0.75,
-      padding: EdgeInsets.all(8) - EdgeInsets.only(top: 8),
-      margin: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8) - const EdgeInsets.only(top: 8),
+      margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.lightBlue[50],
-        border: Border(
+        border: const Border(
           left: BorderSide(color: Colors.grey),
           bottom: BorderSide(color: Colors.black, width: 2)
         )
@@ -133,6 +134,32 @@ class _InfoLabel extends StatelessWidget {
           Text(value)
         ],
       ),
+    );
+  }
+}
+
+
+
+
+
+
+class _AccountStatusText extends StatelessWidget {
+  const _AccountStatusText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (context.read<AppState>().user.isActive){
+      return Text("Active",
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          fontWeight: FontWeight.bold,
+            color: Colors.green),
+      );
+    }
+
+    return Text("InActive",
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+        fontWeight: FontWeight.bold,
+          color: Colors.purple),
     );
   }
 }

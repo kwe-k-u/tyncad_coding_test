@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tyncad_test/models/app_state.dart';
 import 'package:tyncad_test/models/user.dart';
 import 'package:tyncad_test/screens/feed_screen/feed_screen.dart';
 import 'package:tyncad_test/screens/sign_in/sign_in.dart';
@@ -6,6 +7,7 @@ import 'package:tyncad_test/services/api.dart';
 import 'package:tyncad_test/widgets/custom_button.dart';
 import 'package:tyncad_test/widgets/custom_text_field.dart';
 import 'package:tyncad_test/widgets/text_action.dart';
+import 'package:provider/provider.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -99,13 +101,24 @@ class _CreateAccountState extends State<CreateAccount> {
                 CustomButton(
                   text: "Create Account",
                   onTap: () async{
-                    // User? user = await Api().createAccount(
-                    //     email: email.text,
-                    //     password: password.text,
-                    //   firstName: firstName.text,
-                    //   lastName: lastName.text,
-                    //   phoneNumber: phoneNumber.text,
-                    // );
+                    User? user = await Api().createAccount(
+                        email: email.text,
+                        password: password.text,
+                      firstName: firstName.text,
+                      lastName: lastName.text,
+                      phoneNumber: phoneNumber.text,
+                    );
+
+                    if (user != null){
+                      context.read<AppState>().signIn(user);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=> FeedScreen()
+                          )
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Check your login credentials")));
+                    }
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context)=> FeedScreen()
                         )

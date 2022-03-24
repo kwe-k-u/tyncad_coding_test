@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final IconData? hintIcon;
   final double? width;
   final double? height;
+  final void Function(String)? onChange;
 
   const CustomTextField({
     Key? key,
@@ -15,6 +16,7 @@ class CustomTextField extends StatefulWidget {
     this.hintText,
     this.obscure = false,
     this.hintIcon,
+    this.onChange,
     this.height,
     this.width,
   }) : super(key: key);
@@ -32,6 +34,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       width: size.width * 0.7,
       child: TextFormField(
         controller: widget.controller,
+        onChanged: widget.onChange,
         obscureText: widget.obscure,
         decoration: InputDecoration(
           prefixIcon: Icon(widget.hintIcon),

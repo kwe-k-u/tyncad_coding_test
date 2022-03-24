@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tyncad_test/models/app_state.dart';
 import 'package:tyncad_test/models/user.dart';
 import 'package:tyncad_test/screens/create_account/create_account.dart';
 import 'package:tyncad_test/screens/feed_screen/feed_screen.dart';
@@ -6,6 +7,9 @@ import 'package:tyncad_test/services/api.dart';
 import 'package:tyncad_test/widgets/custom_button.dart';
 import 'package:tyncad_test/widgets/custom_text_field.dart';
 import 'package:tyncad_test/widgets/text_action.dart';
+import 'package:provider/provider.dart';
+
+
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -69,11 +73,17 @@ class _SignInState extends State<SignIn> {
                 CustomButton(
                     text: "Sign in",
                   onTap: () async{
-                    // User? user = await Api().login(email: email.text, password: password.text);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context)=> FeedScreen()
-                        )
-                    );
+                    User? user = await Api().login(email: email.text, password: password.text);
+                    if (user != null){
+                      context.read<AppState>().signIn(user);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=> FeedScreen()
+                          )
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Check your login credentials")));
+                    }
+
                   },
                 ),
 
