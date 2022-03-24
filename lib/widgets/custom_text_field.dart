@@ -5,6 +5,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String? hintText;
   final bool obscure;
+  final IconData? hintIcon;
   final double? width;
   final double? height;
 
@@ -13,6 +14,7 @@ class CustomTextField extends StatefulWidget {
     required this.controller,
     this.hintText,
     this.obscure = false,
+    this.hintIcon,
     this.height,
     this.width,
   }) : super(key: key);
@@ -26,17 +28,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      padding: const EdgeInsets.all(8),
-      width: widget.width ?? size.width * 0.7,
-      height: widget.height,
+    return SizedBox(
+      width: size.width * 0.7,
       child: TextFormField(
         controller: widget.controller,
         obscureText: widget.obscure,
         decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20)
-          ),
+          prefixIcon: Icon(widget.hintIcon),
+          // border: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(20)
+          // ),
           hintText: widget.hintText
         ),
       ),
